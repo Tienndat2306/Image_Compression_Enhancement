@@ -89,12 +89,17 @@ The system integrates multi-stage computer vision algorithms (combining **CLAHE*
 ## 2. Key Features
 
 - **PCA Image Compression & Dimensionality Reduction**:
-  - Customizable principal components ($k \in [1, 200]$).
+  - Customizable principal components ($k \in [1, 250]$) with randomized SVD acceleration.
+  - **Auto-select optimal $k$** based on cumulative explained variance thresholds (90%, 95%, 98%, 99%).
+  - **Real Binary PCA Serialization (.NPZ)**: Export and download compact `.npz` archives containing only projection matrices $Z$, components $V_k$, and mean vectors $\mu$.
+  - **Full Decompression Engine**: Upload any `.npz` archive to reconstruct and restore original images without loss of mathematical precision.
+  - **Multi-k Sweep Comparison**: Automatically generate side-by-side matrices across 4 distinct $k$ thresholds to observe progressive detail decay.
   - Dynamic boundary safety: Automatically clamps $k \le \min(H, W)$ to prevent server exceptions on smaller dimensions.
   - Per-channel independent matrix decomposition across 3-channel RGB as well as 1-channel Grayscale images.
   - Safe alpha channel conversion: Automatically converts RGBA/transparent formats to an opaque white background.
 - **Image Enhancement & Detail Clarification (OpenCV & Pillow)**:
   - **Combined (CLAHE + Unsharp Mask)** *(Recommended)*: Adaptive contrast equalization in the LAB color space followed by Gaussian unsharp masking for optimal clarity and crispness.
+  - **Bilateral Filtering (Denoising)**: Edge-preserving smoothing filter eliminating high-frequency sensor noise before sharpening.
   - **Detail Sharpening (Unsharp Masking)**: Highlights fine edges, textures, and textual contours.
   - **Adaptive Contrast Enhancement (CLAHE)**: Enhances local contrast in shadowed or foggy regions without clipping.
   - **Laplacian Edge Filtering**: Enhances structural contours via a high-pass spatial convolution kernel.
@@ -103,12 +108,16 @@ The system integrates multi-stage computer vision algorithms (combining **CLAHE*
   - **Split-screen Comparison Slider**: Smooth interactive handle supporting desktop mouse dragging and mobile touch gestures.
   - Flexible view switching between *Comparison Slider* and *Side-by-Side* display modes.
 - **Quantitative Quality Metrics**:
+  - **Structural Similarity Index (SSIM)**: Zhou Wang's perceptual visual similarity index ($[0, 1]$).
   - Computes Mean Squared Error (**MSE**) and Peak Signal-to-Noise Ratio (**PSNR** in dB).
+  - **Cumulative Explained Variance Ratio**: Measures the exact percentage of total image energy retained by top $k$ components.
+  - **Scree Plot Chart**: Interactive Chart.js visualization mapping cumulative and individual component variances.
   - Calculates theoretical mathematical matrix reduction ratios achieved by PCA.
   - Measures sharpness objectively using the **Laplacian Variance** ($Var(\nabla^2 I_{gray})$).
 - **Multi-user & Robust Architecture**:
   - UUIDv4 session file naming prevents filename collisions and concurrency race conditions.
-  - Comprehensive format compatibility: PNG, JPG, JPEG, WEBP, BMP, JFIF.
+  - Automatic scheduled housekeeping cleans temporary session files older than 2 hours.
+  - Comprehensive format compatibility: PNG, JPG, JPEG, WEBP, BMP, JFIF, and NPZ.
 
 ---
 
@@ -138,6 +147,10 @@ For an image channel matrix $\mathbf{A} \in \mathbb{R}^{H \times W}$:
   $$\text{MSE} = \frac{1}{H \times W \times C} \sum_{c=1}^C \sum_{i=1}^H \sum_{j=1}^W \left( \mathbf{A}(i, j, c) - \mathbf{\hat{A}}(i, j, c) \right)^2$$
 - **Peak Signal-to-Noise Ratio (PSNR)**:
   $$\text{PSNR} = 10 \cdot \log_{10} \left( \frac{255^2}{\text{MSE}} \right) \quad (\text{dB})$$
+- **Structural Similarity Index (SSIM)**:
+  $$\text{SSIM}(x, y) = \frac{(2\mu_x\mu_y + c_1)(2\sigma_{xy} + c_2)}{(\mu_x^2 + \mu_y^2 + c_1)(\sigma_x^2 + \sigma_y^2 + c_2)}$$
+- **Cumulative Explained Variance Ratio**:
+  $$\text{Explained Ratio}(k) = \frac{\sum_{i=1}^k \lambda_i}{\sum_{j=1}^{\min(H, W)} \lambda_j} \times 100\%$$
 - **Objective Sharpness (Laplacian Variance)**:
   $$\text{Sharpness} = \text{Var}(\nabla^2 I_{gray})$$
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCA Compression & Image Enhancement - Nén & Làm rõ ảnh thông minh</title>
+    <title>PCA Image Compression & Image Enhancement - Hệ thống Nén & Xử lý ảnh Thông minh</title>
     
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -27,6 +27,7 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 40px 20px;
+            color: #1e293b;
         }
         
         /* Main Container */
@@ -59,18 +60,26 @@
             font-weight: 400;
         }
         
-        .badge {
+        .badge-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .badge-item {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(255,255,255,0.2);
+            gap: 6px;
+            background: rgba(255,255,255,0.22);
             backdrop-filter: blur(10px);
-            padding: 8px 24px;
+            padding: 6px 16px;
             border-radius: 50px;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: white;
-            margin-top: 15px;
             border: 1px solid rgba(255,255,255,0.3);
+            font-weight: 500;
         }
 
         /* Flash message alerts */
@@ -87,22 +96,23 @@
         }
         .alert-danger { background: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
         .alert-warning { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+        .alert-success { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
         .alert-info { background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; }
         
         /* Upload Card */
         .upload-card {
-            background: rgba(255,255,255,0.96);
-            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(14px);
             border-radius: 30px;
             padding: 40px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.22);
             margin-bottom: 40px;
             transition: transform 0.3s ease;
             animation: fadeInUp 0.8s ease;
         }
         
         .upload-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-2px);
         }
 
         /* Mode Tabs */
@@ -118,7 +128,7 @@
             padding: 6px;
             border-radius: 50px;
             gap: 8px;
-            max-width: 650px;
+            max-width: 850px;
             width: 100%;
         }
 
@@ -132,7 +142,7 @@
             border: none;
             background: transparent;
             color: #555;
-            font-size: 1rem;
+            font-size: 0.95rem;
             font-weight: 600;
             border-radius: 40px;
             cursor: pointer;
@@ -140,7 +150,7 @@
         }
 
         .tab-btn i {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
         }
 
         .tab-btn.active {
@@ -192,6 +202,17 @@
             color: #4338ca;
             font-weight: 500;
         }
+
+        /* Decompress Panel */
+        .decompress-panel {
+            display: none;
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px dashed #667eea;
+            text-align: center;
+            margin-bottom: 25px;
+        }
         
         /* Slider Container for PCA */
         .slider-container {
@@ -218,6 +239,54 @@
             border-radius: 50px;
             font-weight: 600;
             font-size: 1.1rem;
+        }
+
+        /* Preset variance chips */
+        .preset-container {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #e2e8f0;
+        }
+
+        .preset-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preset-btn {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preset-btn:hover {
+            border-color: #667eea;
+            background: #eef2ff;
+            color: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .preset-btn.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
         }
 
         /* Method Selection for Enhancement */
@@ -300,6 +369,60 @@
             font-weight: 600;
             margin-left: auto;
         }
+
+        /* Denoise switch */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            padding: 14px 20px;
+            background: #f8fafc;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-round {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #cbd5e1;
+            transition: .3s;
+            border-radius: 34px;
+        }
+
+        .slider-round:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider-round {
+            background-color: #10b981;
+        }
+
+        input:checked + .slider-round:before {
+            transform: translateX(22px);
+        }
         
         input[type="range"] {
             width: 100%;
@@ -344,10 +467,6 @@
             box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
         }
         
-        .btn-submit:active {
-            transform: translateY(0);
-        }
-        
         /* Loading Spinner */
         .loading {
             display: none;
@@ -372,7 +491,7 @@
         
         .result-card {
             background: rgba(255,255,255,0.97);
-            backdrop-filter: blur(12px);
+            backdrop-filter: blur(14px);
             border-radius: 30px;
             padding: 35px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.2);
@@ -411,20 +530,22 @@
             gap: 6px;
         }
         
+        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
             margin-bottom: 30px;
         }
         
         .stat-card {
             background: linear-gradient(135deg, #f8fafc, #edf2f7);
             border-radius: 20px;
-            padding: 22px;
+            padding: 20px;
             text-align: center;
             transition: transform 0.3s ease;
             border: 1px solid #e2e8f0;
+            position: relative;
         }
         
         .stat-card:hover {
@@ -432,42 +553,184 @@
         }
         
         .stat-icon {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #667eea;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .stat-label {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #64748b;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-            font-weight: 600;
+            letter-spacing: 0.8px;
+            margin-bottom: 5px;
+            font-weight: 700;
         }
         
         .stat-value {
-            font-size: 1.8rem;
+            font-size: 1.65rem;
             font-weight: 800;
             color: #1e293b;
         }
 
-        /* Chart Container */
-        .chart-container {
+        .stat-sub {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        /* Charts 2-Column Grid */
+        .charts-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+
+        .chart-box {
             background: white;
             border-radius: 20px;
-            padding: 25px;
-            margin: 25px 0;
+            padding: 22px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.06);
             border: 1px solid #eef2f6;
         }
-        
+
         .chart-title {
             text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.15rem;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* NPZ Package Card */
+        .npz-package-card {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e0f2fe 100%);
+            border: 2px solid #86efac;
+            border-radius: 20px;
+            padding: 22px;
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .npz-info h4 {
+            font-size: 1.15rem;
+            color: #065f46;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .npz-info p {
+            font-size: 0.9rem;
+            color: #047857;
+        }
+
+        .btn-download-npz {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: all 0.25s ease;
+        }
+
+        .btn-download-npz:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.45);
+        }
+
+        /* Multi-k Sweep Section */
+        .sweep-section {
+            margin: 30px 0;
+            padding: 24px;
+            background: #f8fafc;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sweep-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn-sweep {
+            padding: 10px 22px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-sweep:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.4);
+        }
+
+        .sweep-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+            margin-top: 15px;
+        }
+
+        .sweep-card {
+            background: white;
+            border-radius: 16px;
+            padding: 14px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+            transition: transform 0.25s ease;
+        }
+
+        .sweep-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .sweep-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .sweep-card-badge {
+            display: inline-block;
+            background: #eef2ff;
+            color: #4f46e5;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
         }
 
         /* View Mode Switcher */
@@ -500,7 +763,7 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
         }
 
-        /* ================= Before/After Slider Component ================= */
+        /* Before/After Slider Component */
         .ba-container {
             max-width: 900px;
             margin: 20px auto;
@@ -637,10 +900,6 @@
             transition: transform 0.3s ease;
         }
         
-        .image-box img:hover {
-            transform: scale(1.02);
-        }
-        
         .download-link {
             display: inline-flex;
             align-items: center;
@@ -684,25 +943,13 @@
         
         /* Animations */
         @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @keyframes spin {
@@ -711,42 +958,30 @@
         }
         
         /* Responsive */
+        @media (max-width: 992px) {
+            .charts-row { grid-template-columns: 1fr; }
+        }
+
         @media (max-width: 768px) {
-            body {
-                padding: 20px 15px;
-            }
-            
-            .header h1 {
-                font-size: 2rem;
-            }
-            
-            .upload-card {
-                padding: 20px;
-            }
+            body { padding: 20px 15px; }
+            .header h1 { font-size: 2rem; }
+            .upload-card { padding: 20px; }
+            .mode-tabs { flex-direction: column; }
+            .ba-wrapper { height: 340px; }
+            .image-comparison { grid-template-columns: 1fr; gap: 20px; }
+            .stats-grid { grid-template-columns: 1fr 1fr; }
+            .npz-package-card { flex-direction: column; text-align: center; }
+        }
 
-            .mode-tabs {
-                flex-direction: column;
-            }
-
-            .ba-wrapper {
-                height: 340px;
-            }
-            
-            .image-comparison {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr; }
         }
         
         /* Footer */
         .footer {
             text-align: center;
             margin-top: 40px;
-            color: rgba(255,255,255,0.85);
+            color: rgba(255,255,255,0.88);
             font-size: 0.95rem;
         }
     </style>
@@ -761,6 +996,12 @@
             </h1>
             <p>Hệ thống Nén ảnh giảm chiều (PCA) & Làm rõ/Tăng tương phản (OpenCV/Pillow)</p>
             
+            <div class="badge-list">
+                <span class="badge-item"><i class="fas fa-microchip"></i> SVD / PCA Tối ưu</span>
+                <span class="badge-item"><i class="fas fa-chart-line"></i> SSIM, PSNR & MSE</span>
+                <span class="badge-item"><i class="fas fa-file-archive"></i> Gói nén nhị phân .NPZ</span>
+                <span class="badge-item"><i class="fas fa-filter"></i> Lọc song phương Bilateral</span>
+            </div>
         </div>
 
         <!-- Flash messages -->
@@ -768,7 +1009,7 @@
           {% if messages %}
             {% for category, message in messages %}
               <div class="alert-box alert-{{ category }}">
-                  <i class="fas {% if category == 'danger' %}fa-exclamation-circle{% elif category == 'warning' %}fa-exclamation-triangle{% else %}fa-info-circle{% endif %}"></i>
+                  <i class="fas {% if category == 'danger' %}fa-exclamation-circle{% elif category == 'warning' %}fa-exclamation-triangle{% elif category == 'success' %}fa-check-circle{% else %}fa-info-circle{% endif %}"></i>
                   <span>{{ message }}</span>
               </div>
             {% endfor %}
@@ -780,15 +1021,19 @@
             <!-- Mode Switcher Tabs -->
             <div class="mode-tabs-container">
                 <div class="mode-tabs">
-                    <button type="button" class="tab-btn {% if not result or result.current_mode == 'pca' %}active{% endif %}" id="tabPCA" onclick="switchMode('pca')">
+                    <button type="button" class="tab-btn {% if not result or result.current_mode == 'pca' and not result.is_decompressed_view %}active{% endif %}" id="tabPCA" onclick="switchMode('pca')">
                         <i class="fas fa-compress-alt"></i> 1. Nén ảnh (PCA)
                     </button>
                     <button type="button" class="tab-btn {% if result and result.current_mode == 'enhance' %}active{% endif %}" id="tabEnhance" onclick="switchMode('enhance')">
                         <i class="fas fa-wand-magic-sparkles"></i> 2. Làm rõ ảnh (OpenCV)
                     </button>
+                    <button type="button" class="tab-btn" id="tabDecompress" onclick="switchMode('decompress')">
+                        <i class="fas fa-file-archive"></i> 3. Giải nén file .NPZ
+                    </button>
                 </div>
             </div>
 
+            <!-- 1 & 2: Form Upload ảnh thông thường -->
             <form id="uploadForm" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="mode" id="modeInput" value="{{ result.current_mode if result else 'pca' }}">
 
@@ -797,7 +1042,7 @@
                     <i class="fas fa-cloud-upload-alt upload-icon"></i>
                     <h3>Kéo thả ảnh vào đây</h3>
                     <p>hoặc click để chọn file từ máy tính (PNG, JPG, JPEG, WEBP, BMP)</p>
-                    <input type="file" name="file" id="fileInput" accept="image/*" style="display: none;" required>
+                    <input type="file" name="file" id="fileInput" accept="image/*" style="display: none;">
                     <div class="file-info" id="fileInfo" style="display: none;">
                         <i class="fas fa-image"></i> <span id="fileName"></span> - <span id="fileSize"></span>
                     </div>
@@ -811,10 +1056,27 @@
                         </label>
                         <span class="k-value" id="kValueDisplay">{{ result.current_k if result and result.current_k else '50' }}</span>
                     </div>
-                    <input type="range" name="k" id="kSlider" min="1" max="200" value="{{ result.current_k if result and result.current_k else '50' }}">
+                    <input type="range" name="k" id="kSlider" min="1" max="250" value="{{ result.current_k if result and result.current_k else '50' }}">
                     <div style="display: flex; justify-content: space-between; margin-top: 10px; color: #64748b; font-size: 0.85rem;">
-                        <span>Ít thành phần (Nén nhiều, chi tiết giảm)</span>
-                        <span>Nhiều thành phần (Chất lượng cao, dung lượng lớn)</span>
+                        <span>Ít thành phần (Nén cao, chi tiết tối giản)</span>
+                        <span>Nhiều thành phần (Độ trung thực cao, giữ nguyên chi tiết)</span>
+                    </div>
+
+                    <!-- Preset Auto k Buttons based on Explained Variance -->
+                    <div class="preset-container">
+                        <span class="preset-title"><i class="fas fa-magic"></i> Gợi ý theo % Phương sai:</span>
+                        <button type="button" class="preset-btn" onclick="applyPresetK({{ result.k_90 if result and result.k_90 else 30 }}, 90)">
+                            90% Thông tin (k={{ result.k_90 if result and result.k_90 else 30 }})
+                        </button>
+                        <button type="button" class="preset-btn" onclick="applyPresetK({{ result.k_95 if result and result.k_95 else 55 }}, 95)">
+                            ⭐ 95% Khuyên dùng (k={{ result.k_95 if result and result.k_95 else 55 }})
+                        </button>
+                        <button type="button" class="preset-btn" onclick="applyPresetK({{ result.k_98 if result and result.k_98 else 85 }}, 98)">
+                            98% Chi tiết cao (k={{ result.k_98 if result and result.k_98 else 85 }})
+                        </button>
+                        <button type="button" class="preset-btn" onclick="applyPresetK({{ result.k_99 if result and result.k_99 else 120 }}, 99)">
+                            99% Gần như gốc (k={{ result.k_99 if result and result.k_99 else 120 }})
+                        </button>
                     </div>
                 </div>
 
@@ -876,6 +1138,20 @@
                         </div>
                     </div>
 
+                    <!-- Denoising Toggle -->
+                    <div class="toggle-container">
+                        <label class="toggle-switch">
+                            <input type="checkbox" name="denoise" value="1" checked>
+                            <span class="slider-round"></span>
+                        </label>
+                        <div>
+                            <strong><i class="fas fa-shield-halved" style="color: #10b981;"></i> Khử nhiễu nền bằng Bộ lọc song phương (Bilateral Filter)</strong>
+                            <div style="font-size: 0.85rem; color: #64748b;">
+                                Khử sạch các hạt nhiễu và đốm mờ trước khi tăng nét, ngăn ngừa việc khuếch đại hạt nhiễu (noise)
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Strength Slider -->
                     {% set current_strength = result.current_strength if result and result.current_strength else 2 %}
                     <div class="slider-container" style="margin-bottom: 0;">
@@ -901,14 +1177,33 @@
                     <i class="fas fa-compress-alt" id="submitBtnIcon"></i>
                     <span id="submitBtnText">Nén ảnh ngay</span>
                 </button>
-                
-                <!-- Loading Spinner -->
-                <div class="loading" id="loading">
-                    <div class="spinner"></div>
-                    <p style="color: #667eea; font-weight: 600;" id="loadingText">Đang xử lý ảnh...</p>
-                    <small style="color: #94a3b8;">Quá trình này có thể mất vài giây</small>
-                </div>
             </form>
+
+            <!-- 3. DECOMPRESS PANEL (.NPZ Upload) -->
+            <div class="decompress-panel" id="decompressPanel">
+                <i class="fas fa-file-archive" style="font-size: 3rem; color: #10b981; margin-bottom: 15px;"></i>
+                <h3 style="color: #1e293b; margin-bottom: 8px;">Giải nén ảnh từ gói nén PCA (.npz)</h3>
+                <p style="color: #64748b; margin-bottom: 20px; font-size: 0.95rem;">
+                    Tải lên file <code>.npz</code> đã được nén trước đó để chứng minh khả năng tái tạo ngược lại ảnh ban đầu từ các thành phần chính
+                </p>
+
+                <form action="/decompress_pca" method="post" enctype="multipart/form-data">
+                    <div style="max-width: 450px; margin: 0 auto 20px auto;">
+                        <input type="file" name="package_file" accept=".npz" required 
+                               style="display: block; width: 100%; padding: 12px; background: white; border-radius: 12px; border: 1px solid #cbd5e1;">
+                    </div>
+                    <button type="submit" class="btn-submit" style="max-width: 320px; margin: 0 auto; background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-box-open"></i> Giải nén & Tái tạo ảnh
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Loading Spinner -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p style="color: #667eea; font-weight: 600;" id="loadingText">Đang phân tích SVD và phân rã PCA...</p>
+                <small style="color: #94a3b8;">Hệ thống đang tính toán MSE, PSNR, SSIM và tạo gói nén nhị phân</small>
+            </div>
         </div>
         
         <!-- Result Section -->
@@ -921,104 +1216,136 @@
                 <div class="result-header">
                     <h2>
                         <i class="fas fa-chart-bar" style="color: #667eea;"></i> 
-                        Kết quả nén ảnh với PCA
+                        {% if result.is_decompressed_view %}Kết quả giải nén từ file .NPZ{% else %}Kết quả nén ảnh với PCA{% endif %}
                     </h2>
                     
                     <div class="meta-tags">
                         <span class="meta-pill"><i class="fas fa-ruler-combined"></i> Kích thước: {{result.img_width}} &times; {{result.img_height}} px</span>
                         <span class="meta-pill"><i class="fas fa-sliders-h"></i> Thành phần chính: <strong>k = {{result.k}}</strong></span>
-                        <span class="meta-pill"><i class="fas fa-shield-alt"></i> Max k khả dụng: {{result.max_k}}</span>
+                        <span class="meta-pill"><i class="fas fa-shield-alt"></i> Max k: {{result.max_k}}</span>
+                        <span class="meta-pill"><i class="fas fa-bolt"></i> Solver: {{result.svd_solver}}</span>
                     </div>
 
                     {% if result.adjusted_k %}
                     <div style="margin-top: 12px; padding: 10px 18px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 12px; display: inline-block;">
                         <small style="color: #b45309; font-weight: 600;">
-                            <i class="fas fa-info-circle"></i> Lưu ý: Bạn đã chọn k = {{result.raw_k}}, hệ thống đã tự động điều chỉnh k = {{result.k}} (bằng giới hạn kích thước ảnh nhỏ nhất) để tránh lỗi thuật toán!
+                            <i class="fas fa-info-circle"></i> Bạn đã chọn k = {{result.raw_k}}, hệ thống đã tự động giới hạn k = {{result.k}} để tương thích kích thước ma trận!
                         </small>
                     </div>
                     {% endif %}
                 </div>
                 
-                <!-- Statistics Grid -->
+                <!-- Statistics Grid (6 Metrics) -->
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-hourglass-half"></i></div>
+                        <div class="stat-icon"><i class="fas fa-stopwatch"></i></div>
                         <div class="stat-label">Thời gian xử lý</div>
                         <div class="stat-value">{{"%.3f"|format(result.time)}}s</div>
+                        <div class="stat-sub">Phân rã: {{result.t_decomp}}s | Tái tạo: {{result.t_recon}}s</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
-                        <div class="stat-label">MSE (Sai số tái tạo)</div>
+                        <div class="stat-icon"><i class="fas fa-square-root-variable"></i></div>
+                        <div class="stat-label">MSE (Sai số)</div>
                         <div class="stat-value">{{"%.2f"|format(result.mse)}}</div>
+                        <div class="stat-sub">Sai số điểm ảnh trung bình</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-signal"></i></div>
                         <div class="stat-label">PSNR (Độ trung thực)</div>
                         <div class="stat-value">{{"%.2f"|format(result.psnr)}} dB</div>
+                        <div class="stat-sub">> 30 dB: Mắt người khó phân biệt</div>
+                    </div>
+                    <div class="stat-card" style="border-color: #a7f3d0;">
+                        <div class="stat-icon" style="color: #10b981;"><i class="fas fa-eye"></i></div>
+                        <div class="stat-label">SSIM (Tương đồng cấu trúc)</div>
+                        <div class="stat-value" style="color: #059669;">{{result.ssim}}</div>
+                        <div class="stat-sub">Độ chân thực thị giác: {{result.ssim_percent}}%</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon"><i class="fas fa-calculator"></i></div>
+                        <div class="stat-icon" style="color: #6366f1;"><i class="fas fa-battery-three-quarters"></i></div>
+                        <div class="stat-label">Phương sai giải thích</div>
+                        <div class="stat-value" style="color: #4f46e5;">{{result.cum_energy}}%</div>
+                        <div class="stat-sub">Năng lượng thông tin được giữ lại</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="color: #f59e0b;"><i class="fas fa-cubes"></i></div>
                         <div class="stat-label">Giảm ma trận lý thuyết</div>
-                        <div class="stat-value" style="color: #10b981;">{{result.theoretical_savings}}%</div>
+                        <div class="stat-value" style="color: #d97706;">{{result.theoretical_savings}}%</div>
+                        <div class="stat-sub">Số phần tử ma trận lưu trữ</div>
                     </div>
                 </div>
 
-                <!-- Chart Container -->
-                <div class="chart-container">
-                    <div class="chart-title">
-                        <i class="fas fa-chart-pie"></i> So sánh dung lượng file trên ổ đĩa
+                <!-- NPZ REAL COMPRESSION PACKAGE -->
+                {% if result.pkg_name %}
+                <div class="npz-package-card">
+                    <div class="npz-info">
+                        <h4><i class="fas fa-file-zipper"></i> Gói nén dữ liệu PCA thực tế (.NPZ)</h4>
+                        <p>
+                            Gói nhị phân chỉ lưu trữ ma trận thành phần $V_k$, hệ số chiếu $Z$ và vector $\mu$.
+                            Dung lượng gói: <strong>{{ result.npz_size }}</strong>
+                            {% if result.npz_savings_pct > 0 %}(Tiết kiệm <strong>{{ result.npz_savings_pct }}%</strong> so với ảnh gốc){% endif %}.
+                        </p>
                     </div>
-                    <canvas id="compressionChart" 
-                            data-original="{{ result.original_size_kb if result.original_size_kb else 0 }}"
-                            data-compressed="{{ result.compressed_size_kb if result.compressed_size_kb else 0 }}"
-                            style="max-width: 480px; margin: 0 auto; display: block;">
-                    </canvas>
-                    
-                    <!-- Thông tin chi tiết -->
-                    <div style="margin-top: 25px; padding: 18px; background: #f8fafc; border-radius: 14px; border: 1px solid #e2e8f0;">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; text-align: center;">
-                            <div>
-                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">
-                                    <i class="fas fa-file-image"></i> File gốc
-                                </div>
-                                <div style="font-size: 1.25rem; font-weight: 700; color: #10b981;">
-                                    {{ result.original_size }}
-                                </div>
-                            </div>
-                            <div>
-                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">
-                                    <i class="fas fa-compress-alt"></i> File sau nén
-                                </div>
-                                <div style="font-size: 1.25rem; font-weight: 700; color: #764ba2;">
-                                    {{ result.compressed_size }}
-                                </div>
-                            </div>
-                            <div>
-                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">
-                                    <i class="fas fa-balance-scale"></i> Biến động đĩa
-                                </div>
-                                <div style="font-size: 1.25rem; font-weight: 700; color: #667eea;">
-                                    {% if result.is_disk_saved %}-{{ result.size_reduction }}{% else %}+{{ result.size_reduction }}{% endif %}
-                                </div>
-                            </div>
-                            <div>
-                                <div style="color: #64748b; font-size: 0.85rem; margin-bottom: 5px;">
-                                    <i class="fas fa-microchip"></i> Giảm chiều PCA
-                                </div>
-                                <div style="font-size: 1.25rem; font-weight: 700; color: #f59e0b;">
-                                    {{ result.theoretical_savings }}%
-                                </div>
-                            </div>
+                    <a href="/download_npz/{{ result.pkg_name }}" class="btn-download-npz">
+                        <i class="fas fa-download"></i> Tải file nén PCA (.npz)
+                    </a>
+                </div>
+                {% endif %}
+
+                <!-- 2 CHARTS SIDE BY SIDE -->
+                <div class="charts-row">
+                    <!-- Chart 1: File Size Comparison -->
+                    <div class="chart-box">
+                        <div class="chart-title">
+                            <i class="fas fa-chart-pie" style="color: #667eea;"></i> So sánh dung lượng file
+                        </div>
+                        <canvas id="compressionChart" 
+                                data-original="{{ result.original_size_kb if result.original_size_kb else 0 }}"
+                                data-compressed="{{ result.compressed_size_kb if result.compressed_size_kb else 0 }}"
+                                data-npz="{{ result.npz_size_kb if result.npz_size_kb else 0 }}"
+                                style="max-height: 240px; margin: 0 auto; display: block;">
+                        </canvas>
+                        <div style="margin-top: 15px; font-size: 0.85rem; text-align: center; color: #64748b;">
+                            Gốc: <strong>{{result.original_size}}</strong> | Sau nén JPG: <strong>{{result.compressed_size}}</strong>
                         </div>
                     </div>
-                    
-                    <div style="margin-top: 15px; padding: 12px; background: #e0f2fe; border-radius: 10px; text-align: center;">
-                        <small style="color: #0369a1; font-weight: 500;">
-                            <i class="fas fa-info-circle"></i> 
-                            Thuật toán PCA giảm số chiều của ảnh từ {{result.max_k}} xuống {{result.k}}, tiết kiệm <strong>{{result.theoretical_savings}}%</strong> dữ liệu điểm ảnh ma trận!
-                        </small>
+
+                    <!-- Chart 2: Scree Plot & Cumulative Variance Curve -->
+                    <div class="chart-box">
+                        <div class="chart-title">
+                            <i class="fas fa-chart-line" style="color: #10b981;"></i> Đồ thị phương sai tích lũy (Scree Plot)
+                        </div>
+                        <canvas id="screeChart" style="max-height: 240px; margin: 0 auto; display: block;"></canvas>
+                        <div style="margin-top: 15px; font-size: 0.85rem; text-align: center; color: #64748b;">
+                            Tại <strong>k = {{result.k}}</strong>, PCA giữ lại <strong>{{result.cum_energy}}%</strong> phương sai toàn ảnh
+                        </div>
                     </div>
                 </div>
+
+                <!-- MULTI-K SWEEP COMPARISON -->
+                {% if not result.is_decompressed_view %}
+                <div class="sweep-section">
+                    <div class="sweep-header">
+                        <div>
+                            <h3 style="font-size: 1.15rem; color: #1e293b; margin-bottom: 4px;">
+                                <i class="fas fa-table-cells-large" style="color: #6366f1;"></i> 
+                                So sánh nhanh đa mức k (Multi-k Sweep Preview)
+                            </h3>
+                            <p style="font-size: 0.85rem; color: #64748b;">
+                                Xem trước mức độ suy hao chi tiết tại 4 mốc thành phần chính khác nhau trên cùng một bức ảnh
+                            </p>
+                        </div>
+                        <button type="button" class="btn-sweep" id="btnRunSweep" onclick="runMultiKSweep('{{ result.orig }}')">
+                            <i class="fas fa-play"></i> Tạo bảng so sánh 4 mức k
+                        </button>
+                    </div>
+                    <div id="sweepLoading" style="display: none; text-align: center; padding: 20px;">
+                        <i class="fas fa-circle-notch fa-spin" style="font-size: 1.8rem; color: #6366f1;"></i>
+                        <p style="color: #6366f1; font-size: 0.9rem; margin-top: 8px;">Đang tính toán phân rã 4 mức k...</p>
+                    </div>
+                    <div class="sweep-grid" id="sweepGrid" style="display: none;"></div>
+                </div>
+                {% endif %}
 
                 <!-- View Switcher -->
                 <div class="view-switch-container">
@@ -1048,13 +1375,14 @@
                     <p class="ba-hint"><i class="fas fa-hand-pointer"></i> Kéo thanh trượt qua lại để soi trực tiếp từng chi tiết ảnh trước và sau khi nén</p>
                     <div style="text-align: center; margin-top: 15px;">
                         <a href="/uploads/{{result.recon}}" class="download-link" download>
-                            <i class="fas fa-download"></i> Tải ảnh sau nén PCA
+                            <i class="fas fa-download"></i> Tải ảnh sau nén PCA (JPG)
                         </a>
                         &nbsp;
                         <form action="/enhance_existing" method="POST" style="display: inline-block;">
                             <input type="hidden" name="filename" value="{{result.recon}}">
                             <input type="hidden" name="enhance_method" value="combined">
                             <input type="hidden" name="strength" value="2">
+                            <input type="hidden" name="denoise" value="1">
                             <button type="submit" class="btn-enhance-quick">
                                 <i class="fas fa-wand-magic-sparkles"></i> ✨ Làm nét ảnh nén này với OpenCV
                             </button>
@@ -1089,6 +1417,7 @@
                     <div class="meta-tags">
                         <span class="meta-pill"><i class="fas fa-magic"></i> Phương pháp: <strong>{{result.method_name}}</strong></span>
                         <span class="meta-pill"><i class="fas fa-tachometer-alt"></i> Cường độ: <strong>{{result.strength_label}} (Mức {{result.strength}})</strong></span>
+                        <span class="meta-pill"><i class="fas fa-shield-halved"></i> Khử nhiễu Bilateral: <strong>{{ 'Bật' if result.denoise else 'Tắt' }}</strong></span>
                         <span class="meta-pill"><i class="fas fa-ruler-combined"></i> {{result.img_width}} &times; {{result.img_height}} px</span>
                     </div>
                 </div>
@@ -1099,21 +1428,31 @@
                         <div class="stat-icon"><i class="fas fa-bolt"></i></div>
                         <div class="stat-label">Thời gian xử lý</div>
                         <div class="stat-value">{{"%.3f"|format(result.time)}}s</div>
+                        <div class="stat-sub">Thời gian lọc & làm nét</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon"><i class="fas fa-eye-slash"></i></div>
-                        <div class="stat-label">Độ nét ảnh ban đầu</div>
+                        <div class="stat-label">Độ nét ban đầu</div>
                         <div class="stat-value">{{result.orig_sharpness}}</div>
+                        <div class="stat-sub">Phương sai Laplacian</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="color: #10b981;"><i class="fas fa-eye"></i></div>
                         <div class="stat-label">Độ nét sau làm rõ</div>
                         <div class="stat-value" style="color: #10b981;">{{result.enhanced_sharpness}}</div>
+                        <div class="stat-sub">Phương sai Laplacian mới</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-icon" style="color: #059669;"><i class="fas fa-arrow-trend-up"></i></div>
                         <div class="stat-label">Tăng độ sắc nét</div>
                         <div class="stat-value" style="color: #059669;">+{{result.sharpness_increase}}%</div>
+                        <div class="stat-sub">Mức độ cải thiện cạnh viền</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="color: #6366f1;"><i class="fas fa-check-double"></i></div>
+                        <div class="stat-label">Chỉ số SSIM</div>
+                        <div class="stat-value" style="color: #4f46e5;">{{result.ssim}}</div>
+                        <div class="stat-sub">Bảo tồn cấu trúc ảnh gốc</div>
                     </div>
                 </div>
 
@@ -1198,8 +1537,12 @@
         const modeInput = document.getElementById('modeInput');
         const tabPCA = document.getElementById('tabPCA');
         const tabEnhance = document.getElementById('tabEnhance');
+        const tabDecompress = document.getElementById('tabDecompress');
+        
+        const uploadForm = document.getElementById('uploadForm');
         const pcaControls = document.getElementById('pcaControls');
         const enhanceControls = document.getElementById('enhanceControls');
+        const decompressPanel = document.getElementById('decompressPanel');
         
         const kSlider = document.getElementById('kSlider');
         const kValueDisplay = document.getElementById('kValueDisplay');
@@ -1207,7 +1550,6 @@
         const strengthSlider = document.getElementById('strengthSlider');
         const strengthValueDisplay = document.getElementById('strengthValueDisplay');
         
-        const uploadForm = document.getElementById('uploadForm');
         const submitBtn = document.getElementById('submitBtn');
         const submitBtnText = document.getElementById('submitBtnText');
         const submitBtnIcon = document.getElementById('submitBtnIcon');
@@ -1225,20 +1567,36 @@
         // Switch Mode Function
         function switchMode(mode) {
             modeInput.value = mode;
+            [tabPCA, tabEnhance, tabDecompress].forEach(t => t.classList.remove('active'));
+            
             if (mode === 'pca') {
                 tabPCA.classList.add('active');
-                tabEnhance.classList.remove('active');
+                uploadForm.style.display = 'block';
+                decompressPanel.style.display = 'none';
                 pcaControls.style.display = 'block';
                 enhanceControls.style.display = 'none';
                 submitBtnText.textContent = 'Nén ảnh ngay';
                 submitBtnIcon.className = 'fas fa-compress-alt';
-            } else {
+            } else if (mode === 'enhance') {
                 tabEnhance.classList.add('active');
-                tabPCA.classList.remove('active');
+                uploadForm.style.display = 'block';
+                decompressPanel.style.display = 'none';
                 pcaControls.style.display = 'none';
                 enhanceControls.style.display = 'block';
                 submitBtnText.textContent = '✨ Làm rõ ảnh ngay';
                 submitBtnIcon.className = 'fas fa-wand-magic-sparkles';
+            } else if (mode === 'decompress') {
+                tabDecompress.classList.add('active');
+                uploadForm.style.display = 'none';
+                decompressPanel.style.display = 'block';
+            }
+        }
+
+        // Apply Preset k value
+        function applyPresetK(val, pct) {
+            if (kSlider) {
+                kSlider.value = val;
+                kValueDisplay.textContent = val + ` (${pct}%)`;
             }
         }
 
@@ -1324,9 +1682,9 @@
             }
             
             if (modeInput.value === 'pca') {
-                loadingText.textContent = 'Đang phân tích và nén ảnh với thuật toán PCA...';
+                loadingText.textContent = 'Đang phân tích SVD, trích xuất đặc trưng và nén PCA...';
             } else {
-                loadingText.textContent = 'Đang làm rõ và tăng độ tương phản với OpenCV & Pillow...';
+                loadingText.textContent = 'Đang khử nhiễu và làm rõ ảnh với OpenCV...';
             }
 
             submitBtn.style.display = 'none';
@@ -1360,6 +1718,58 @@
                 baContainer.style.display = 'none';
                 sideContainer.style.display = 'grid';
             }
+        }
+
+        // Multi-k Sweep Ajax Call
+        function runMultiKSweep(origFilename) {
+            const btn = document.getElementById('btnRunSweep');
+            const loading = document.getElementById('sweepLoading');
+            const grid = document.getElementById('sweepGrid');
+            
+            btn.disabled = true;
+            loading.style.display = 'block';
+            grid.style.display = 'none';
+
+            const formData = new FormData();
+            formData.append('filename', origFilename);
+
+            fetch('/sweep_pca', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                if (data.success && data.sweep_results) {
+                    grid.innerHTML = '';
+                    data.sweep_results.forEach(item => {
+                        const card = document.createElement('div');
+                        card.className = 'sweep-card';
+                        card.innerHTML = `
+                            <span class="sweep-card-badge">k = ${item.k} (${item.energy}% info)</span>
+                            <img src="${item.image_url}" alt="k=${item.k}">
+                            <div style="font-size: 0.85rem; color: #475569; text-align: left; line-height: 1.5;">
+                                <div><strong>PSNR:</strong> ${item.psnr} dB</div>
+                                <div><strong>SSIM:</strong> ${item.ssim}</div>
+                                <div><strong>Giảm ma trận:</strong> <span style="color:#10b981;">${item.savings}%</span></div>
+                            </div>
+                            <a href="${item.image_url}" target="_blank" download style="display: inline-block; margin-top: 8px; font-size: 0.8rem; color: #6366f1; text-decoration: none; font-weight: 600;">
+                                <i class="fas fa-download"></i> Tải ảnh k=${item.k}
+                            </a>
+                        `;
+                        grid.appendChild(card);
+                    });
+                    grid.style.display = 'grid';
+                } else {
+                    alert('Lỗi tạo so sánh đa mức: ' + (data.error || 'Không xác định'));
+                }
+            })
+            .catch(err => {
+                loading.style.display = 'none';
+                btn.disabled = false;
+                alert('Lỗi kết nối khi quét đa mức: ' + err.message);
+            });
         }
 
         // Initialize Before/After Interactive Comparison Slider
@@ -1426,70 +1836,131 @@
     {% if result and result.mode == 'pca' %}
     <script>
         (function() {
-            function initChart() {
-                const canvas = document.getElementById('compressionChart');
-                if (!canvas) return;
-                
-                const originalSize = parseFloat(canvas.dataset.original);
-                const compressedSize = parseFloat(canvas.dataset.compressed);
-                
-                if (isNaN(originalSize) || isNaN(compressedSize) || originalSize === 0) {
-                    return;
-                }
-                
-                // An toàn xử lý cả trường hợp kích thước đĩa tăng hoặc giảm
-                const compressedPercent = Math.min(100, Math.max(0, (compressedSize / originalSize) * 100));
-                const savedPercent = Math.max(0, 100 - compressedPercent);
-                
-                const ctx = canvas.getContext('2d');
-                new Chart(ctx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: [
-                            `Dung lượng sau nén (${compressedSize.toFixed(1)} KB)`,
-                            `Tiết kiệm đĩa (${Math.max(0, originalSize - compressedSize).toFixed(1)} KB)`
-                        ],
-                        datasets: [{
-                            data: [compressedSize, Math.max(0, originalSize - compressedSize)],
-                            backgroundColor: [
-                                'rgba(118, 75, 162, 0.85)',
-                                'rgba(16, 185, 129, 0.85)'
-                            ],
-                            borderColor: [
-                                'rgba(118, 75, 162, 1)',
-                                'rgba(16, 185, 129, 1)'
-                            ],
-                            borderWidth: 2,
-                            hoverOffset: 8
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: true,
-                        plugins: {
-                            legend: {
-                                position: 'bottom',
-                                labels: {
-                                    font: { size: 12, family: 'Inter' },
-                                    padding: 15
-                                }
+            function initCharts() {
+                // 1. Doughnut Chart: File Size Comparison
+                const canvasComp = document.getElementById('compressionChart');
+                if (canvasComp) {
+                    const originalSize = parseFloat(canvasComp.dataset.original);
+                    const compressedSize = parseFloat(canvasComp.dataset.compressed);
+                    const npzSize = parseFloat(canvasComp.dataset.npz) || 0;
+                    
+                    if (!isNaN(originalSize) && originalSize > 0) {
+                        const labels = [`File JPG tái tạo (${compressedSize.toFixed(1)} KB)`];
+                        const dataVals = [compressedSize];
+                        const colors = ['rgba(118, 75, 162, 0.85)'];
+                        const borderColors = ['rgba(118, 75, 162, 1)'];
+
+                        if (npzSize > 0) {
+                            labels.push(`Gói nén PCA .NPZ (${npzSize.toFixed(1)} KB)`);
+                            dataVals.push(npzSize);
+                            colors.push('rgba(16, 185, 129, 0.85)');
+                            borderColors.push('rgba(16, 185, 129, 1)');
+                        }
+
+                        const savedDiff = Math.max(0, originalSize - compressedSize);
+                        labels.push(`Khoảng chênh lệch (${savedDiff.toFixed(1)} KB)`);
+                        dataVals.push(savedDiff);
+                        colors.push('rgba(226, 232, 240, 0.85)');
+                        borderColors.push('rgba(203, 213, 225, 1)');
+
+                        new Chart(canvasComp.getContext('2d'), {
+                            type: 'doughnut',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    data: dataVals,
+                                    backgroundColor: colors,
+                                    borderColor: borderColors,
+                                    borderWidth: 2
+                                }]
                             },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        return `${context.label}`;
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: { font: { size: 11, family: 'Inter' } }
                                     }
                                 }
                             }
-                        }
+                        });
                     }
-                });
+                }
+
+                // 2. Line Chart: Scree Plot & Cumulative Variance Curve
+                const canvasScree = document.getElementById('screeChart');
+                {% if result.scree_ks %}
+                if (canvasScree) {
+                    const ks = {{ result.scree_ks | tojson }};
+                    const cumVar = {{ result.scree_cum_var | tojson }};
+                    const indVar = {{ result.scree_ind_var | tojson }};
+                    
+                    new Chart(canvasScree.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: ks.map(k => `k=${k}`),
+                            datasets: [
+                                {
+                                    label: '% Phương sai tích lũy (Cumulative)',
+                                    data: cumVar,
+                                    borderColor: '#10b981',
+                                    backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                                    fill: true,
+                                    tension: 0.35,
+                                    pointRadius: 3,
+                                    pointHoverRadius: 6,
+                                    yAxisID: 'y'
+                                },
+                                {
+                                    label: '% Phương sai thành phần k (Individual)',
+                                    data: indVar,
+                                    borderColor: '#6366f1',
+                                    backgroundColor: 'rgba(99, 102, 241, 0.2)',
+                                    type: 'bar',
+                                    yAxisID: 'y1'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            interaction: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            scales: {
+                                y: {
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'left',
+                                    max: 100,
+                                    min: 0,
+                                    title: { display: true, text: 'Tích lũy (%)' }
+                                },
+                                y1: {
+                                    type: 'linear',
+                                    display: false,
+                                    position: 'right',
+                                    grid: { drawOnChartArea: false }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { font: { size: 11, family: 'Inter' } }
+                                }
+                            }
+                        }
+                    });
+                }
+                {% endif %}
             }
             
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initChart);
+                document.addEventListener('DOMContentLoaded', initCharts);
             } else {
-                initChart();
+                initCharts();
             }
         })();
     </script>
